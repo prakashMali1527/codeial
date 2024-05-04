@@ -8,7 +8,11 @@ const app = express();
 
 // set up view engine
 app.set('view engine', 'ejs');
-app.set('views','./views');
+app.set('views', './views');
+
+// extract style and scripts from sub pages into the layout
+app.set('layout extractStyles', true);
+app.set('layout extractScripts', true);
 
 // set static files
 app.use(express.static('./assets'));
