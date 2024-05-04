@@ -1,5 +1,6 @@
 // require express library 
 const express = require('express');
+const expressLayouts = require('express-ejs-layouts');
 const port = 8000;
 
 // fire the express
@@ -8,6 +9,9 @@ const app = express();
 // set up view engine
 app.set('view engine', 'ejs');
 app.set('views','./views');
+
+// set express layouts 
+app.use(expressLayouts);
 
 //middleware to handle routes
 app.use('/', require('./routes/index'));
