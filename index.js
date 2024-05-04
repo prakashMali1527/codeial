@@ -5,6 +5,10 @@ const port = 8000;
 // fire the express
 const app = express();
 
+// set up view engine
+app.set('view engine', 'ejs');
+app.set('views','./views');
+
 //middleware to handle routes
 app.use('/', require('./routes/index'));
 
