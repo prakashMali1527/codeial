@@ -10,6 +10,8 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views','./views');
 
+// set static files
+app.use(express.static('./assets'));
 // set express layouts 
 app.use(expressLayouts);
 
