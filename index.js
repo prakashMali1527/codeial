@@ -1,11 +1,17 @@
-// require express library 
+// require library 
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const port = 8000;
 const db = require('./config/mongoose');
 const User = require('./models/user');
+const cookieParser = require('cookie-parser');
 // fire the express
 const app = express();
+
+// parses data from POST request
+app.use(express.urlencoded());
+// parse cookies data
+app.use(cookieParser());
 
 // set up view engine
 app.set('view engine', 'ejs');
