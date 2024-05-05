@@ -12,6 +12,8 @@ router.use('/signUp', require('./signup.js'));
 
 router.use('/signIn', require('./signin.js'));
 
+router.use('/signout',require('./signout.js'));
+
 router.use('/users', require('./users.js'));
 // for any further route access from here
 // router.use('/routerName',require('./routerFile'));

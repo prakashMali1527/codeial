@@ -2,10 +2,10 @@ const User = require('../models/user');
 
 module.exports.profile = function (req, res) {
     const { user_id } = req.cookies;
-    console.log(user_id);
+    console.log(`User token: ${user_id}`);
     if (!user_id) {
         console.log('No token available');
-        res.redirect('/signin');
+        return res.redirect('/signin');
     }
 
     User.findOne({ _id: user_id })
