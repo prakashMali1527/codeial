@@ -1,5 +1,30 @@
+const User = require('../models/user');
+
 module.exports.profile = function (req, res) {
-    res.render('user_profile', { title: 'profile' });
+    const { user_id } = req.cookies;
+    console.log(user_id);
+    if (!user_id) {
+        console.log('No token available');
+        res.redirect('/signin');
+    }
+
+    User.findOne({ _id: user_id })
+        .then(function (user) {
+            if (!user) {
+                console.log('Invalid user token');
+                return res.redirect('/signin');
+            }
+
+            return res.render('user_profile', {
+                title: 'profile',
+                name: user.name,
+                email: user.email
+            });
+
+        }).catch(function (err) {
+            console.log('Error validating user token');
+            return res.redirect('back');
+        })
 }
 
 module.exports.post = function (req, res) {
