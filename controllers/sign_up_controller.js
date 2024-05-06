@@ -21,7 +21,7 @@ module.exports.createUser = function (req, res) {
 
         User.create({ name, email, password })
         .then(function (newUser) {
-            res.redirect('/signin');
+            return res.redirect('/signin');
         }).catch(function(err) {
             console.log('Error in creating User while Signing Up');
             return;
