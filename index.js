@@ -35,16 +35,19 @@ app.use(expressLayouts);
 
 app.use(session({
     name: 'codeial',
+    // TODO change secret key before deployment
     secret: 'blahblahblahsometing',
     saveUninitialized: false,
     resave: false,
     cookie:{
-        maxAge: (5 * 60 * 100)
+        maxAge: (1000 * 60 * 10) // 10 minute session
     }
 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(passport.setAuthenticatedUser);
 
 //middleware to handle routes
 app.use('/', require('./routes/index'));
