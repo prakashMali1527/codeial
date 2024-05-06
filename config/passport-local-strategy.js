@@ -60,4 +60,16 @@ passport.setAuthenticatedUser = function (req, res, next) {
     next();
 }
 
+// check if user is already logged in then restrict signIn signOut
+passport.checkUnauthentication = function(req,res,next){
+    // if authenticated go back to profile
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
+    // not authenticated then give access to signOut signIn or pass to next()
+
+    next();
+    
+}
+
 module.exports = passport;

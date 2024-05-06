@@ -4,7 +4,7 @@ const passport = require('passport');
 
 const signInController = require('../controllers/sign_in_controller');
 
-router.get('/', signInController.signIn);
+router.get('/',passport.checkUnauthentication, signInController.signIn);
 
 // use passport as middleware to authenticate
 router.post('/create-session',passport.authenticate(

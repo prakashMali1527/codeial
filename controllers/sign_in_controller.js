@@ -4,5 +4,5 @@ module.exports.signIn = function(req,res){
 
 // sign in and create a session for user
 module.exports.createSession = function(req,res){
-    res.redirect('/');
+    res.redirect('/users/profile');
 }
