@@ -13,8 +13,18 @@ const MongoStore = require('connect-mongo');
 
 const cookieParser = require('cookie-parser');
 
+const sassMiddleware = require('node-sass-middleware');
+
 // fire the express
 const app = express();
+
+app.use(sassMiddleware({
+    src: './assets/scss',
+    dest: './assets/css',
+    debug: true,
+    outputStyle: 'expanded',
+    prefix: '/CSS'
+}));
 
 // parses data from POST request
 app.use(express.urlencoded());
