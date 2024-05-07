@@ -1,0 +1,26 @@
+#navbar{
+    padding: 6px;
+    background-color: rgb(120, 118, 238);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    a{
+        color: white;
+        text-decoration: none;
+    }
+
+    >a{
+        font-size: 1.8rem;
+        font-weight: bolder;
+    }
+
+    li{
+        display: flex;
+        a{
+            margin: 5px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+    }
+}

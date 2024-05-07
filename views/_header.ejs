@@ -1,20 +1,18 @@
-<header>
-    <p style="color:red">header</p>
+<header id="navbar">
+    <a href="/">Codeial</a>
     <ul>
         <% if(locals.user) { %>
             <li>
                 <a href="/users/profile">
                     <%= user.name %>
                 </a>
-            </li>
-            <li>
+
                 <a href="/signin/destroy-session">Sign Out</a>
             </li>
         <% } else{ %>
             <li>
                 <a href="/signin">Sign In</a>
-            </li>
-            <li>
+        
                 <a href="/signup">Sign Up</a>
             </li>
         <% } %>
