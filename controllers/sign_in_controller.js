@@ -6,3 +6,12 @@ module.exports.signIn = function(req,res){
 module.exports.createSession = function(req,res){
     res.redirect('/users/profile');
 }
+
+module.exports.destroySession = function(req,res){
+    req.logout(function(err){
+        if(err){
+            console.log('Error in signing out or destroyingSession');
+        }
+        res.redirect('/');
+    });
+}
