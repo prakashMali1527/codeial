@@ -3,6 +3,7 @@ const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const db = require('./config/mongoose');
 const User = require('./models/user');
+const Post = require('./models/post');
 const port = 8000;
 
 // used for session and passport authentication
@@ -21,7 +22,7 @@ const app = express();
 app.use(sassMiddleware({
     src: './assets/scss',
     dest: './assets/css',
-    debug: true,
+    debug: false,   // set true if you want to debug scss
     outputStyle: 'expanded',
     prefix: '/CSS'
 }));

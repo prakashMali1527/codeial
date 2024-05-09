@@ -1,7 +1,7 @@
 :root {
   --input-box-border-color: rgba(191, 191, 191, 0.538);
   --main-color: blue;
-  --main-bg-color:  rgb(230, 245, 248);
+  --main-bg-color: rgb(230, 245, 248);
 }
 
 #main-container {
