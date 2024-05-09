@@ -1,6 +1,16 @@
-<h1>Sign In page</h1>
-<form action="/signin/create-session" method="POST">
-    <input type="email" name="email" placeholder="Email" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <button type="submit">Sign In</button>
-</form>
+<link rel="stylesheet" href="/CSS/signin.css">
+
+<div id="main-container">
+    <div id="signIn-container">
+        <h1 id="site-logo">Codeial</h1>
+        <div id="signIn-box">
+            <p id="form-label">Sign In to Codeial</p>
+            <form action="/signin/create-session" method="POST">
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Sign In</button>
+            </form>
+        </div>
+    </div>
+</div>
+
