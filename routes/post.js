@@ -3,7 +3,10 @@ const router = express.Router();
 
 const postController = require('../controllers/post_controller');
 
-router.post('/create-comment',postController.createComment);
+const passport = require('../config/passport-local-strategy'); 
+
+// comments authentication 
+router.post('/create-comment', passport.checkAuthentication, postController.createComment);
 
 router.post('/create',postController.createPost);
 
