@@ -26,6 +26,16 @@
                     </form>
                 <% } %>
             </div>
+            <div class="post-comments-list">
+                <ul>
+                    <% post.comments.forEach((comment)=>{ %>
+                        <li>
+                            <p> <%= comment.content%></p>
+                            <small> <%= comment.user.name %> </small>
+                        </li>
+                    <% }) %>
+                </ul>
+            </div>
         <% }) %>
     </div>
 </section>

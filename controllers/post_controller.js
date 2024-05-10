@@ -20,7 +20,7 @@ module.exports.createComment = function (req, res) {
     // fetched postID through button value
     Post.findById(req.body.postID)
         .then((post) => {
-            Comment.create({ comment: req.body.comment, user: req.user._id, post: post._id })
+            Comment.create({ content: req.body.comment, user: req.user._id, post: post._id })
                 .then((newComment) => {
                     console.log('comment added successfully to db');
                     // add comment to post comments list
@@ -30,10 +30,9 @@ module.exports.createComment = function (req, res) {
                     console.log('Error creating comment in database');
                     return;
                 });
-            res.redirect('back');
         }).catch((err) => {
             console.log('Error validating post in database');
             return;
         });
-
+    res.redirect('back');
 }
