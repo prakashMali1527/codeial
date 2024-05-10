@@ -12,6 +12,16 @@ module.exports.friends = function (req, res) {
     res.send('<ul> <li> friend List </li> </ul>');
 }
 
+// Sign Out user and destroy Session
+module.exports.destroySession = function(req,res){
+    req.logout(function(err){
+        if(err){
+            console.log('Error in signing out or destroyingSession');
+        }
+        res.redirect('/signin');
+    });
+}
+
 // storing post to database by associating user id with it!
 module.exports.createPost = function (req, res) {
     console.log(req.body);

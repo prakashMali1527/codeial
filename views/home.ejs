@@ -4,9 +4,19 @@
 
 
 <section id="feed-posts">
-    <h4>Posts</h4>
-    <form action="/users/create-post" id="new-post-form" method="POST">
-        <textarea name="content" cols="30" rows="3" placeholder="Type here..." required></textarea>
-        <input type="submit" value="Post">
-    </form>
+    <h3>Posts</h3>
+    <% if(locals.user) { %>
+        <form action="/users/create-post" id="new-post-form" method="POST">
+            <textarea name="content" cols="30" rows="3" placeholder="Type here..." required></textarea>
+            <input type="submit" value="Post">
+        </form>
+    <% } %>
+    <div id="posts-list-container">
+        <% locals.posts.forEach((post)=>{ %>
+            <div class="post">
+                <h5> <%= post.user.name %> </h5>
+                <div> <%= post.content %> </div>
+            </div>
+        <% }) %>
+    </div>
 </section>

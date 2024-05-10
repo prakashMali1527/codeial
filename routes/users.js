@@ -9,4 +9,6 @@ router.get('/post', usersController.post);
 router.get('/friends', usersController.friends);
 router.post('/create-post',passport.checkAuthentication, usersController.createPost);
 
+router.get('/destroy-session',usersController.destroySession);
+
 module.exports = router;
