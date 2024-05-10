@@ -18,12 +18,22 @@ module.exports.createPost = function (req, res) {
 // store comments to database
 module.exports.createComment = function (req, res) {
     // fetched postID through button value
-    Comment.create({ comment: req.body.comment, user: req.user._id, post: req.body.postID })
-        .then((newComment) => {
-            console.log('Comment added successfully');
+    Post.findById(req.body.postID)
+        .then((post) => {
+            Comment.create({ comment: req.body.comment, user: req.user._id, post: post._id })
+                .then((newComment) => {
+                    console.log('comment added successfully to db');
+                    // add comment to post comments list
+                    post.comments.push(newComment._id);
+                    post.save();
+                }).catch((err) => {
+                    console.log('Error creating comment in database');
+                    return;
+                });
+            res.redirect('back');
         }).catch((err) => {
-            console.log('Error creating comment to database');
+            console.log('Error validating post in database');
             return;
         });
-    res.redirect('back');
+
 }
