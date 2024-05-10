@@ -10,4 +10,6 @@ router.post('/create-comment', passport.checkAuthentication, postController.crea
 
 router.post('/create',postController.createPost);
 
+router.get('/destroy/:id',postController.destroy);
+
 module.exports = router;

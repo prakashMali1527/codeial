@@ -14,7 +14,10 @@
     <div id="posts-list-container">
         <% locals.posts.forEach((post)=>{ %>
             <div class="post">
-                <h5> <%= post.user.name %> </h5>
+                <span> <%= post.user.name %> </span>
+                <% if(locals.user && locals.user.id == post.user.id) { %>
+                    <a href="/post/destroy/<%= post.id %>">X</a>
+                <% } %>
                 <div> <%= post.content %> </div>
             </div>
             <div class="post-comments">
@@ -36,6 +39,7 @@
                     <% }) %>
                 </ul>
             </div>
+            <br>
         <% }) %>
     </div>
 </section>

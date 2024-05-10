@@ -10,7 +10,6 @@ module.exports.home = function(req, res) {
         }
     })
     .then((postList)=>{
-        console.log(postList);
         res.render('home', { 
             title: 'home',
             posts: postList

@@ -36,3 +36,32 @@ module.exports.createComment = function (req, res) {
         });
     res.redirect('back');
 }
+
+module.exports.destroy = function (req, res) {
+    Post.findById(req.params.id)
+        .then((post) => {
+            if (post.user == req.user.id) {
+
+                Post.deleteOne({ _id: req.params.id })
+                    .then(() => {
+                        console.log('post deleted');
+                    }).catch((err) => {
+                        console.log('error deleting the post');
+                        return res.redirect('back');
+                    })
+
+                Comment.deleteMany({ post: req.params.id })
+                    .then(() => {
+                        console.log('All comments related to post destroyed');
+                    }).catch((err) => {
+                        console.log('Error deleting all comments related to post');
+                        return;
+                    })
+            }
+
+        }).catch((err) => {
+            console.log('Cannot delete post');
+            return;
+        })
+    res.redirect('back');
+}
