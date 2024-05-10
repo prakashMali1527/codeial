@@ -13,3 +13,10 @@ module.exports.createPost = function (req, res) {
     });
     res.redirect('back');
 }
+
+// store comments to database
+module.exports.createComment = function(req,res){
+    console.log('comment created successfully');
+
+    res.redirect('back');
+}
