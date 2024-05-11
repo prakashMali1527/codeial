@@ -1,4 +1,5 @@
 const User = require('../models/user');
+
 module.exports.profile = function (req, res) {
 
     User.findById(req.params.id)
@@ -8,6 +9,19 @@ module.exports.profile = function (req, res) {
             profile_user: user 
         });
     })
+}
+
+module.exports.update = function(req,res){
+    console.log('inside update function');
+    console.log(req.body);
+    if(req.user.id == req.params.id){
+        User.findByIdAndUpdate(req.user.id,req.body)
+        .then((user)=>{
+            return res.redirect('back');
+        }).catch((err)=>{
+            return res.status(401).send('Unauthorized');
+        })
+    }
 }
 
 module.exports.posts = function (req, res) {
