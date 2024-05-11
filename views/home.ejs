@@ -22,8 +22,8 @@
             </div>
             <div class="post-comments">
                 <% if(locals.user) { %>
-                    <form action="/post/create-comment" class="new-comment-form" method="POST">
-                        <input name="comment" type="text" placeholder="comment here...">
+                    <form action="/comment/create" class="new-comment-form" method="POST">
+                        <input name="comment" type="text" placeholder="comment here..." required>
                         <!-- Try input type="hidden" passes hidden data-->
                         <button type="text" name="postID" value="<%=post._id%>">comment</button>
                     </form>
@@ -33,6 +33,9 @@
                 <ul>
                     <% post.comments.forEach((comment)=>{ %>
                         <li>
+                            <% if(locals.user && comment.user.id == locals.user.id) { %>
+                                <a href="/comment/destroy/<%= comment.id %>">x</a>
+                            <% } %>
                             <p> <%= comment.content%></p>
                             <small> <%= comment.user.name %> </small>
                         </li>

@@ -16,6 +16,7 @@ router.use('/users', require('./users.js'));
 
 router.use('/post',require('./post.js'));
 
+router.use('/comment',require('./comment.js'));
 // for any further route access from here
 // router.use('/routerName',require('./routerFile'));
 

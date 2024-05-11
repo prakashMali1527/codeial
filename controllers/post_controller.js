@@ -15,31 +15,11 @@ module.exports.createPost = function (req, res) {
     res.redirect('back');
 }
 
-// store comments to database
-module.exports.createComment = function (req, res) {
-    // fetched postID through button value
-    Post.findById(req.body.postID)
-        .then((post) => {
-            Comment.create({ content: req.body.comment, user: req.user._id, post: post._id })
-                .then((newComment) => {
-                    console.log('comment added successfully to db');
-                    // add comment to post comments list
-                    post.comments.push(newComment._id);
-                    post.save();
-                }).catch((err) => {
-                    console.log('Error creating comment in database');
-                    return;
-                });
-        }).catch((err) => {
-            console.log('Error validating post in database');
-            return;
-        });
-    res.redirect('back');
-}
-
+// destroying post and all comments on it
 module.exports.destroy = function (req, res) {
     Post.findById(req.params.id)
         .then((post) => {
+            // delete only if it is current user post
             if (post.user == req.user.id) {
 
                 Post.deleteOne({ _id: req.params.id })
