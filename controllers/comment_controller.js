@@ -26,10 +26,11 @@ module.exports.create = function (req, res) {
 // destroy comment from database
 module.exports.destroy = function(req,res){
     Comment.findById(req.params.id)
+    .populate('post')
     .then((comment)=>{
-        // check if comment belongs to logged in user
-        if(comment.user == req.user.id){
-            let postID = comment.post;
+        // check if comment or post belongs to logged in user
+        if(comment.user == req.user.id || comment.post.user == req.user.id){
+            let postID = comment.post.id;
 
             Comment.deleteOne({_id:req.params.id})
             .then(()=>{
