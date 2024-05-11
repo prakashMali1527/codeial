@@ -2,7 +2,6 @@
 <h1>Home page!!</h1>
 <h2>EJS</h2>
 
-
 <section id="feed-posts">
     <h3>Posts</h3>
     <% if(locals.user) { %>
@@ -12,38 +11,11 @@
         </form>
     <% } %>
     <div id="posts-list-container">
-        <% locals.posts.forEach((post)=>{ %>
-            <div class="post">
-                <span> <%= post.user.name %> </span>
-                <% if(locals.user && locals.user.id == post.user.id) { %>
-                    <a href="/post/destroy/<%= post.id %>">X</a>
-                <% } %>
-                <div> <%= post.content %> </div>
-            </div>
-            <div class="post-comments">
-                <% if(locals.user) { %>
-                    <form action="/comment/create" class="new-comment-form" method="POST">
-                        <input name="comment" type="text" placeholder="comment here..." required>
-                        <!-- Try input type="hidden" passes hidden data-->
-                        <button type="text" name="postID" value="<%=post._id%>">comment</button>
-                    </form>
-                <% } %>
-            </div>
-            <div class="post-comments-list">
-                <ul>
-                    <% post.comments.forEach((comment)=>{ %>
-                        <li>
-                            <!-- allow comment deletion for post user and comment user both -->
-                            <% if(locals.user && (comment.user.id == locals.user.id || post.user.id == locals.user.id)) { %>
-                                <a href="/comment/destroy/<%= comment.id %>">x</a>
-                            <% } %>
-                            <p> <%= comment.content%></p>
-                            <small> <%= comment.user.name %> </small>
-                        </li>
-                    <% }) %>
-                </ul>
-            </div>
-            <br>
-        <% }) %>
+        <ul>
+            <% locals.posts.forEach((post)=>{ %>
+                <%- include('_post',{'post': post}) %>
+            <% }) %>
+        </ul>
     </div>
+    
 </section>

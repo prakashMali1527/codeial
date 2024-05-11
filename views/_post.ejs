@@ -1,0 +1,27 @@
+
+<li>
+    <div class="post">
+        <span> <%= post.user.name %> </span>
+        <% if(locals.user && locals.user.id == post.user.id) { %>
+            <a href="/post/destroy/<%= post.id %>">X</a>
+        <% } %>
+        <div> <%= post.content %> </div>
+    </div>
+    <div class="post-comments">
+        <% if(locals.user) { %>
+            <form action="/comment/create" class="new-comment-form" method="POST">
+                <input name="comment" type="text" placeholder="comment here..." required>
+                <!-- Try input type="hidden" passes hidden data-->
+                <button type="text" name="postID" value="<%=post._id%>">comment</button>
+            </form>
+        <% } %>
+    </div>
+    <div class="post-comments-list">
+        <ul>
+            <% post.comments.forEach((comment)=>{ %>
+                    <%- include('_comment',{'comment': comment,'post': post}) -%>
+            <% }) %>
+        </ul>
+    </div>
+    <br>
+</li>

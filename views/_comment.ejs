@@ -1,0 +1,8 @@
+<li>
+    <!-- allow comment deletion for post user and comment user both -->
+    <% if(locals.user && (comment.user.id == locals.user.id || post.user.id == locals.user.id)) { %>
+        <a href="/comment/destroy/<%= comment.id %>">x</a>
+    <% } %>
+    <p> <%= comment.content%></p>
+    <small> <%= comment.user.name %> </small>
+</li>   
