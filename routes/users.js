@@ -5,7 +5,7 @@ const usersController = require('../controllers/users_controller');
 const passport = require('passport');
 
 router.get('/profile/:id', passport.checkAuthentication, usersController.profile);
-router.post('/update/:id', usersController.update);
+router.post('/update/:id', passport.checkAuthentication, usersController.update);
 router.get('/posts', usersController.posts);
 router.get('/friends', usersController.friends);
 router.get('/destroy-session', usersController.destroySession);

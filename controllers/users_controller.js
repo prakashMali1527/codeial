@@ -8,6 +8,8 @@ module.exports.profile = function (req, res) {
             title: 'profile',
             profile_user: user 
         });
+    }).catch((err)=>{
+        console.log('Error showing profile');
     })
 }
 
