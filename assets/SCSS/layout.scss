@@ -4,12 +4,11 @@ html{
 *{
     margin: 0;
     box-sizing: border-box;
-    body {
+}
+
+body {
+    height: 100%;
+    #layout-main{
         height: 100%;
-        #layout-main{
-            height: 100%;
-            padding-top: 10px;
-            background-color: rgb(247, 247, 253);
-        }
     }
 }

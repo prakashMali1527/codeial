@@ -7,12 +7,10 @@ html {
   box-sizing: border-box;
 }
 
-* body {
+body {
   height: 100%;
 }
 
-* body #layout-main {
+body #layout-main {
   height: 100%;
-  padding-top: 10px;
-  background-color: #f7f7fd;
 }
