@@ -1,5 +1,13 @@
+const User = require('../models/user');
 module.exports.profile = function (req, res) {
-    res.render('user_profile', { title: 'profile' });
+
+    User.findById(req.params.id)
+    .then((user)=>{
+        res.render('user_profile', { 
+            title: 'profile',
+            profile_user: user 
+        });
+    })
 }
 
 module.exports.posts = function (req, res) {

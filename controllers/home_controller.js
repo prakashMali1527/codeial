@@ -1,6 +1,9 @@
 const Post = require('../models/post');
+const User = require('../models/user');
 
 module.exports.home = function(req, res) {
+
+    // get posts from db
     Post.find({})
     .populate('user')
     .populate({
@@ -10,15 +13,20 @@ module.exports.home = function(req, res) {
         }
     })
     .then((postList)=>{
-        res.render('home', { 
-            title: 'home',
-            posts: postList
-        });
+        // get users from db
+        User.find({})
+        .then((usersList)=>{
+            res.render('home', { 
+                title: 'home',
+                users: usersList,
+                posts: postList
+            });
+        }).catch((err)=>{
+            console.log('Error getting users from db');
+            return;
+        })
     }).catch((err)=>{
         console.log('Error getting posts from database');
-        res.render('home', { 
-            title: 'home',
-            posts: []
-        });
-    });
+    })
+
 }

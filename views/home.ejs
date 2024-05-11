@@ -19,3 +19,12 @@
     </div>
     
 </section>
+
+<section id="user-friends">
+    <h4>Friends</h4>
+    <% users.forEach((user)=>{ %>
+       <p>
+            <a href="/users/profile/<%= user._id %>"> <%= user.name %> </a>
+       </p>
+    <% }) %>
+</section>
