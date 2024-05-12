@@ -15,6 +15,8 @@ const MongoStore = require('connect-mongo');
 const cookieParser = require('cookie-parser');
 
 const sassMiddleware = require('node-sass-middleware');
+const flash = require('connect-flash');
+const customMware = require('./config/middleware');
 
 // fire the express
 const app = express();
@@ -69,6 +71,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(passport.setAuthenticatedUser);
+app.use(flash());
+app.use(customMware.setFlash);
 
 //middleware to handle routes
 app.use('/', require('./routes/index'));

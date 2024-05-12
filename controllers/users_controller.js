@@ -40,6 +40,7 @@ module.exports.destroySession = function(req,res){
         if(err){
             console.log('Error in signing out or destroyingSession');
         }
-        res.redirect('/signin');
+        req.flash('success','You have Logged Out!');
+        return res.redirect('/signin');
     });
 }
