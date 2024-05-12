@@ -21,7 +21,7 @@ module.exports.update = async function(req,res){
         req.flash('success','User profile got updated');
         return res.redirect('back');
     }else {
-        req.flash('warning',"Cannot update other's profile");
+        req.flash('error',"Cannot update other's profile");
         return res.status(401).send('Unauthorized');
     }
 }

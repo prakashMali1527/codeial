@@ -23,12 +23,12 @@ module.exports.destroy = async function (req, res) {
             await Comment.deleteMany({ post: req.params.id });
             req.flash('success', 'Post and all associated comment deleted');
         } else {
-            req.flash('warning', "Cannot delete other's post");
+            req.flash('error', `Cannot delete other's post`);
         }
-        res.redirect('back');
 
     } catch (err) {
         req.flash('error', 'Error deleting post');
         console.log(`Error: ${err}`);
     }
+    res.redirect('back');
 }
