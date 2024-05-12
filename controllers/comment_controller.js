@@ -7,7 +7,8 @@ module.exports.create = async function (req, res) {
    try{
     const post = await Post.findById(req.body.postID);
     const newComment = await Comment.create({ content: req.body.comment, user: req.user._id, post: post._id });
-    // add comment to post comments list
+    req.flash('success','Comment Published!');
+    // adding comment to post comments list
     post.comments.push(newComment._id);
     post.save();
     res.redirect('back');
@@ -26,8 +27,10 @@ module.exports.destroy = async function(req,res){
             let postID = comment.post.id;
 
             await Comment.deleteOne({_id:req.params.id});
-
+            req.flash('success','Comment successfully deleted');
             await Post.findByIdAndUpdate(postID,{$pull: {comments: comment._id}});
+        }else {
+            req.flash('error','Cannot delete comment');
         }
         res.redirect('back');
     }catch(err){

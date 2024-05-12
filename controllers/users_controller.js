@@ -13,16 +13,16 @@ module.exports.profile = function (req, res) {
     })
 }
 
-module.exports.update = function(req,res){
+module.exports.update = async function(req,res){
     console.log('inside update function');
     console.log(req.body);
     if(req.user.id == req.params.id){
-        User.findByIdAndUpdate(req.user.id,req.body)
-        .then((user)=>{
-            return res.redirect('back');
-        }).catch((err)=>{
-            return res.status(401).send('Unauthorized');
-        })
+        await User.findByIdAndUpdate(req.user.id,req.body);
+        req.flash('success','User profile got updated');
+        return res.redirect('back');
+    }else {
+        req.flash('warning',"Cannot update other's profile");
+        return res.status(401).send('Unauthorized');
     }
 }
 
