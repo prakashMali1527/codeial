@@ -28,7 +28,6 @@ module.exports.createUser = function (req, res) {
         });
 
     }).catch(function(err) {
-        console.log('Error finding the User in Signing Up');
-        return;
+        console.log(`Error: ${err}`);
     });
 }

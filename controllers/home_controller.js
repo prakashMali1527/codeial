@@ -1,32 +1,30 @@
 const Post = require('../models/post');
 const User = require('../models/user');
 
-module.exports.home = function(req, res) {
+module.exports.home = async function (req, res) {
 
-    // get posts from db
-    Post.find({})
-    .populate('user')
-    .populate({
-        path: 'comments',
-        populate:{
-            path: 'user'
-        }
-    })
-    .then((postList)=>{
-        // get users from db
-        User.find({})
-        .then((usersList)=>{
-            res.render('home', { 
-                title: 'home',
-                users: usersList,
-                posts: postList
+    try {
+        // get posts from db
+        const posts = await Post.find({})
+            .populate('user')
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'user'
+                }
             });
-        }).catch((err)=>{
-            console.log('Error getting users from db');
-            return;
-        })
-    }).catch((err)=>{
-        console.log('Error getting posts from database');
-    })
+
+        // get users from db
+        const users = await User.find({});
+
+        res.render('home', {
+            title: 'home',
+            users: users,
+            posts: posts
+        });
+
+    } catch (err) {
+        console.log(`Error: ${err}`);
+    }
 
 }

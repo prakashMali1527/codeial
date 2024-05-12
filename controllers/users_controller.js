@@ -9,7 +9,7 @@ module.exports.profile = function (req, res) {
             profile_user: user 
         });
     }).catch((err)=>{
-        console.log('Error showing profile');
+        console.log(`Error: ${err}`);
     })
 }
 
