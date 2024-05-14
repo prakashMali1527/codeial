@@ -3,7 +3,7 @@
     <div class="post">
         <span> <%= post.user.name %> </span>
         <% if(locals.user && locals.user.id == post.user.id) { %>
-            <a id="delete-post-button" href="/post/destroy/<%= post.id %>">X</a>
+            <a class="delete-post-button" href="/post/destroy/<%= post.id %>">X</a>
         <% } %>
         <div> <%= post.content %> </div>
     </div>

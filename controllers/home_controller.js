@@ -6,6 +6,7 @@ module.exports.home = async function (req, res) {
     try {
         // get posts from db
         const posts = await Post.find({})
+            .sort('-createdAt')
             .populate('user')
             .populate({
                 path: 'comments',
@@ -26,5 +27,4 @@ module.exports.home = async function (req, res) {
     } catch (err) {
         console.log(`Error: ${err}`);
     }
-
 }

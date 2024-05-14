@@ -2,19 +2,20 @@ const Post = require('../models/post');
 const Comment = require('../models/comment');
 // storing post to database by associating user id with it!
 module.exports.createPost = async function (req, res) {
-    try{
+    try {
         const post = await Post.create({ content: req.body.content, user: req.user._id });
-        req.flash('success', 'Post Published!');
-    
-        if(req.xhr){
+        const myPost = await Post.findById(post._id).populate('user');
+
+        if (req.xhr) {
             return res.status(200).json({
-                data:{
-                    post: post
+                data: {
+                    post: myPost
                 },
                 message: 'Post created!'
             });
         }
-    }catch(err){
+        req.flash('success', 'Post Published!');
+    } catch (err) {
         req.flash('error', 'Error publishing post');
     }
     res.redirect('back');
@@ -28,6 +29,14 @@ module.exports.destroy = async function (req, res) {
         if (post.user == req.user.id) {
             await Post.deleteOne({ _id: req.params.id })
             await Comment.deleteMany({ post: req.params.id });
+
+            if (req.xhr) {
+                return res.status(200).json({
+                    data: {
+                        post_id: req.params.id
+                    }
+                });
+            }
             req.flash('success', 'Post and all associated comment deleted');
         } else {
             req.flash('error', `Cannot delete other's post`);
