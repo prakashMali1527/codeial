@@ -34,7 +34,7 @@ module.exports.create = async function (req, res) {
 module.exports.destroy = async function (req, res) {
     try {
         const comment = await Comment.findById(req.params.id)
-            .populate('post');
+        .populate('post');
         // check if comment or post belongs to logged in user
         if (comment.user == req.user.id || comment.post.user == req.user.id) {
             let postID = comment.post.id;
@@ -42,6 +42,14 @@ module.exports.destroy = async function (req, res) {
             await Comment.deleteOne({ _id: req.params.id });
             req.flash('success', 'Comment successfully deleted');
             await Post.findByIdAndUpdate(postID, { $pull: { comments: comment._id } });
+
+            if(req.xhr){
+                return res.status(200).json({
+                    data:{
+                        comment_id: req.params.id
+                    },message: 'Comment Deleted'
+                })
+            }
         } else {
             req.flash('error', 'Cannot delete comment');
         }

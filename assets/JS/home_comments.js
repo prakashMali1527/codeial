@@ -8,11 +8,13 @@ let createComment = function (newCommentForm) {
             url: '/comment/create',
             data: $(newCommentForm).serialize(),
             success: function (data) {
-                let newComment = newCommentDOM(data.data.comment);
+                let commentDOM = newCommentDOM(data.data.comment);
 
                 let post_id = data.data.comment.post;
 
-                $(`#post-comments-${post_id}`).prepend(newComment);
+                $(`#post-comments-${post_id}`).prepend(commentDOM);
+
+                deleteComment($(` .delete-comment-button`,commentDOM));
 
             }, error: function (error) {
                 console.log(`Error: ${error.responseText}`);
@@ -31,4 +33,23 @@ let newCommentDOM = function (comment) {
         <small> ${comment.user.name} </small>
     </li>   
     `);
+}
+
+// method to delete a comment using AJAX
+
+let deleteComment = function(deleteLink){
+    $(deleteLink).click(function(e){
+        console.log('comment deleted');
+        e.preventDefault();
+
+        $.ajax({    
+            type: 'get',
+            url: $(deleteLink).prop('href'),
+            success: function(data){
+                $(`#comment-${data.data.comment_id}`).remove();
+            },error: function(error){
+                console.log(`Error: ${error.responseText}`);
+            }
+        })
+    })
 }

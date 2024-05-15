@@ -57,7 +57,7 @@
         `);
     }
 
-    // method to delete a post in DOM
+    // method to delete a post using AJAX
     const deletePost = function (deleteLink) {
         $(deleteLink).click(function (e) {
             e.preventDefault();
