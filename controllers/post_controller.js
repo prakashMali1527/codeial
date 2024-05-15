@@ -15,6 +15,7 @@ module.exports.createPost = async function (req, res) {
             });
         }
         req.flash('success', 'Post Published!');
+       
     } catch (err) {
         req.flash('error', 'Error publishing post');
     }
@@ -34,7 +35,7 @@ module.exports.destroy = async function (req, res) {
                 return res.status(200).json({
                     data: {
                         post_id: req.params.id
-                    }
+                    },message: 'Post deleted!'
                 });
             }
             req.flash('success', 'Post and all associated comment deleted');

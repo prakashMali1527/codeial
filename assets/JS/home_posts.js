@@ -12,7 +12,11 @@
                 success: function (data) {
                     console.log(data);
                     let newPost = newPostDom(data.data.post);
+
                     $('#posts-list-container>ul').prepend(newPost);
+
+                    createComment($(' .new-comment-form', newPost));
+
                     deletePost($(' .delete-post-button', newPost));
                 }, error: function (err) {
                     console.log(`Error: ${err.responseText}`);
@@ -35,8 +39,11 @@
                 
                     <form action="/comment/create" class="new-comment-form" method="POST">
                         <input name="comment" type="text" placeholder="comment here..." required>
-                        <!-- Try input type="hidden" passes hidden data-->
-                        <button type="text" name="postID" value="${post._id}">comment</button>
+                        
+                        <input type="hidden" name="postID"
+                        value="${post._id}">
+
+                        <button type="submit" >Comment</button>
                     </form>
                 
             </div>
