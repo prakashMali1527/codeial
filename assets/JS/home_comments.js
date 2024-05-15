@@ -16,8 +16,12 @@ let createComment = function (newCommentForm) {
 
                 deleteComment($(` .delete-comment-button`,commentDOM));
 
+                showNoty(data.message,'success');
+
             }, error: function (error) {
                 console.log(`Error: ${error.responseText}`);
+
+                showNoty('Error creating comment!','error');
             }
         })
     })
@@ -47,8 +51,13 @@ let deleteComment = function(deleteLink){
             url: $(deleteLink).prop('href'),
             success: function(data){
                 $(`#comment-${data.data.comment_id}`).remove();
+
+                showNoty(data.message,'success');
+
             },error: function(error){
                 console.log(`Error: ${error.responseText}`);
+
+                showNoty('Cannot delete comment!','error');
             }
         })
     })

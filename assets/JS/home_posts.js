@@ -18,8 +18,13 @@
                     createComment($(' .new-comment-form', newPost));
 
                     deletePost($(' .delete-post-button', newPost));
+                    
+                    showNoty(data.message,'success');
+
                 }, error: function (err) {
                     console.log(`Error: ${err.responseText}`);
+                    
+                    showNoty('Cannot create post!','error');
                 }
             });
 
@@ -66,8 +71,13 @@
                 url: $(deleteLink).prop('href'),
                 success: function (data) {
                     $(`#post-${data.data.post_id}`).remove();
+                    
+                    showNoty(data.message,'success');
+
                 }, error: function (error) {
                     console.log(error.responseText);
+
+                    showNoty('Cannot delete post!','error');
                 }
             });
         })
