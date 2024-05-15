@@ -6,6 +6,9 @@ module.exports.createPost = async function (req, res) {
         const post = await Post.create({ content: req.body.content, user: req.user._id });
         const myPost = await Post.findById(post._id).populate('user');
 
+        // hide password
+        myPost.user.password = '';
+
         if (req.xhr) {
             return res.status(200).json({
                 data: {

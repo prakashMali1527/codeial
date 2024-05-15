@@ -75,4 +75,9 @@
 
 
     createPost();
+    
+    // add AJAX deletion to all post which are already present on the page
+    $(`.delete-post-button`).each(function(){
+        deletePost($(this));
+    })
 }

@@ -53,3 +53,13 @@ let deleteComment = function(deleteLink){
         })
     })
 }
+
+// add AJAX comment create to all post which are already present on the page
+$(`.new-comment-form`).each(function(){
+    createComment($(this));
+})
+
+// add AJAX comment deletion to all comment which are already present on the page
+$('.delete-comment-button').each(function(){
+    deleteComment($(this));
+})

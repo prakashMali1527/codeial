@@ -11,6 +11,9 @@ module.exports.create = async function (req, res) {
 
         const myComment = await Comment.findById(newComment._id).populate('user');
 
+        // hide password
+        myComment.user.password = '';
+
         // adding comment to post comments list
         post.comments.unshift(newComment._id);
         post.save();
