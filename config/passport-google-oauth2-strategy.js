@@ -9,17 +9,17 @@ passport.use(new googleStrategy({
         clientID: "1",
         clientSecret: "2",
         callbackURL: "http://localhost:8000/users/auth/google/callback"
-    },
-    async function(accessToken, refreshToken, profile, done){
-        try{
+},
+    async function (accessToken, refreshToken, profile, done) {
+        try {
             console.log(profile);
             // find a user
-            let user = await User.findOne({email: profile.emails[0].value});
-            if(user){
+            let user = await User.findOne({ email: profile.emails[0].value });
+            if (user) {
                 // if found, set this user as req.user
                 return done(null, user);
-            }else{
-                try{
+            } else {
+                try {
                     // if not found, create the user and set it as req.user
                     let user = User.create({
                         name: profile.displayName,
@@ -29,12 +29,12 @@ passport.use(new googleStrategy({
                             numbers: true
                         })
                     })
-                }catch(err){
-                    console.log('Error in creating user, google passport-strategy ',err);
+                } catch (err) {
+                    console.log('Error in creating user, google passport-strategy ', err);
                 }
             }
-        }catch(err){
-            console.log('Error in google passport-strategy ',err);
+        } catch (err) {
+            console.log('Error in google passport-strategy ', err);
         }
     }
 ));
