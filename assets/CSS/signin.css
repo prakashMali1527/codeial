@@ -59,3 +59,11 @@
   background-color: var(--main-color);
   box-shadow: 1px 1px 1px var(--main-color);
 }
+
+#main-container #signIn-container #signIn-box #social-auth {
+  margin-top: 10px;
+}
+
+#main-container #signIn-container #signIn-box #social-auth #google-auth {
+  text-decoration: none;
+}

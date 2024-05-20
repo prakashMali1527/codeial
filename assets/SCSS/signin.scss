@@ -60,6 +60,13 @@
                     box-shadow: 1px 1px 1px var(--main-color);
                 }
             }
+
+            #social-auth{
+                margin-top: 10px;
+                #google-auth{
+                    text-decoration: none;
+                }
+            }
         }
     }
 }
