@@ -1,5 +1,6 @@
 const Post = require('../models/post');
 const Comment = require('../models/comment');
+const commentMailer = require('./mailers/comment_mailer');
 
 // store comments to database
 module.exports.create = async function (req, res) {
@@ -17,6 +18,8 @@ module.exports.create = async function (req, res) {
         // adding comment to post comments list
         post.comments.unshift(newComment._id);
         post.save();
+
+        commentMailer.newComment(myComment);
 
         if(req.xhr){
             return res.status(200).json({
