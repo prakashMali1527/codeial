@@ -1,10 +1,11 @@
 const User = require('../models/user');
+const signUpMailer = require('./mailers/signUp_mailer');
 module.exports.signUp = function (req, res) {
     res.render('signup');
 }
 
 // get the sign up data
-module.exports.createUser = function (req, res) {
+module.exports.createUser = async function (req, res) {
     const { name, email, password, confirm_password } = req.body;
 
     if (password != confirm_password) {
@@ -12,23 +13,25 @@ module.exports.createUser = function (req, res) {
         return res.redirect('back');
     }
 
-    User.findOne({email})
-    .then(function (user) {
+    try{
+        let user = await User.findOne({email});
+    
         if (user) {
             console.log('User already exist');
             return res.redirect('back');
         }
-
-        User.create({ name, email, password })
-        .then(function (newUser) {
+        try{
+            let newUser = await User.create({ name, email, password });
             req.flash('success','Account created successfully');
+
+            signUpMailer.newAccount(newUser);
+
             return res.redirect('/signin');
-        }).catch(function(err) {
+        }catch(err){
             console.log('Error in creating User while Signing Up');
             return;
-        });
-
-    }).catch(function(err) {
+        }
+    }catch(err) {
         console.log(`Error: ${err}`);
-    });
+    }
 }

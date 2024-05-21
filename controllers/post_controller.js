@@ -1,5 +1,7 @@
 const Post = require('../models/post');
 const Comment = require('../models/comment');
+const postMailer = require('./mailers/post_mailer');
+
 // storing post to database by associating user id with it!
 module.exports.createPost = async function (req, res) {
     try {
@@ -8,6 +10,8 @@ module.exports.createPost = async function (req, res) {
 
         // hide password
         myPost.user.password = '';
+
+        postMailer.newPost(myPost);
 
         if (req.xhr) {
             return res.status(200).json({
