@@ -3,7 +3,8 @@ const googleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const generator = require('generate-password');
 
 const User = require('../models/user');
-const signUpMailer = require('../controllers/mailers/signUp_mailer');
+const queue = require('./kue');
+const emailsWorker = require('../workers/emails_worker');
 
 // tell passport to use a new strategy for google login
 passport.use(new googleStrategy({
@@ -32,7 +33,15 @@ passport.use(new googleStrategy({
                         })
                     });
 
-                    signUpMailer.newAccount(newUser);
+                    // sending signUp emails to emails queue delayed job
+                    // using signup to specify job type @ workers/emails_worker
+                    let job = queue.create('emails', { signup: newUser }).save(function (err) {
+                        if (err) {
+                            console.log('Error in sending signUp user to queue', err);
+                            return;
+                        }
+                        console.log('signUp job enqueued', job.id);
+                    });
 
                     return done(null, newUser);
                 } catch (err) {

@@ -2,7 +2,7 @@ const nodeMailer = require('../../config/nodemailer');
 
 exports.newComment = (comment) => {
 
-    let htmlString = nodeMailer.renderTemplate({comment: comment}, '/comments/new_comment.ejs');
+    let htmlString = nodeMailer.renderTemplate({ comment: comment }, '/comments/new_comment.ejs');
 
     nodeMailer.transporter.sendMail({
         from: "Codeial",
@@ -15,6 +15,6 @@ exports.newComment = (comment) => {
             return;
         }
 
-        console.log('comment mail sent', info);
+        console.log('comment mail sent');
     });
 }

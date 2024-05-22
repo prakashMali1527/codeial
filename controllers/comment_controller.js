@@ -1,6 +1,7 @@
 const Post = require('../models/post');
 const Comment = require('../models/comment');
-const commentMailer = require('./mailers/comment_mailer');
+const queue = require('../config/kue');
+const emailsWorker = require('../workers/emails_worker');
 
 // store comments to database
 module.exports.create = async function (req, res) {
@@ -19,13 +20,21 @@ module.exports.create = async function (req, res) {
         post.comments.unshift(newComment._id);
         post.save();
 
-        commentMailer.newComment(myComment);
+        // sending comment emails to emails queue delayed job
+        // using signup to specify job type @ workers/emails_worker
+        let job = queue.create('emails', { comment: myComment }).save(function (err) {
+            if (err) {
+                console.log('Error in sending comment to queue', err);
+                return;
+            }
+            console.log('comment job enqueued', job.id);
+        });
 
-        if(req.xhr){
+        if (req.xhr) {
             return res.status(200).json({
                 data: {
                     comment: myComment
-                },message: 'Comment Published!'
+                }, message: 'Comment Published!'
             })
         }
 
@@ -40,7 +49,7 @@ module.exports.create = async function (req, res) {
 module.exports.destroy = async function (req, res) {
     try {
         const comment = await Comment.findById(req.params.id)
-        .populate('post');
+            .populate('post');
         // check if comment or post belongs to logged in user
         if (comment.user == req.user.id || comment.post.user == req.user.id) {
             let postID = comment.post.id;
@@ -49,11 +58,11 @@ module.exports.destroy = async function (req, res) {
             req.flash('success', 'Comment successfully deleted');
             await Post.findByIdAndUpdate(postID, { $pull: { comments: comment._id } });
 
-            if(req.xhr){
+            if (req.xhr) {
                 return res.status(200).json({
-                    data:{
+                    data: {
                         comment_id: req.params.id
-                    },message: 'Comment Deleted'
+                    }, message: 'Comment Deleted'
                 })
             }
         } else {

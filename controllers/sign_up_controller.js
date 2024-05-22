@@ -1,5 +1,7 @@
 const User = require('../models/user');
-const signUpMailer = require('./mailers/signUp_mailer');
+const queue = require('../config/kue');
+const emailsWorker = require('../workers/emails_worker');
+
 module.exports.signUp = function (req, res) {
     res.render('signup');
 }
@@ -13,25 +15,33 @@ module.exports.createUser = async function (req, res) {
         return res.redirect('back');
     }
 
-    try{
-        let user = await User.findOne({email});
-    
+    try {
+        let user = await User.findOne({ email });
+
         if (user) {
             console.log('User already exist');
             return res.redirect('back');
         }
-        try{
+        try {
             let newUser = await User.create({ name, email, password });
-            req.flash('success','Account created successfully');
+            req.flash('success', 'Account created successfully');
 
-            signUpMailer.newAccount(newUser);
+            // sending signUp emails to emails queue delayed job
+            // using signup to specify job type @ workers/emails_worker
+            let job = queue.create('emails', { signup: newUser }).save(function (err) {
+                if (err) {
+                    console.log('Error in sending signUp user to queue', err);
+                    return;
+                }
+                console.log('signUp job enqueued', job.id);
+            });
 
             return res.redirect('/signin');
-        }catch(err){
-            console.log('Error in creating User while Signing Up');
+        } catch (err) {
+            console.log('Error in creating User while Signing Up',err);
             return;
         }
-    }catch(err) {
+    } catch (err) {
         console.log(`Error: ${err}`);
     }
 }

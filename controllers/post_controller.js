@@ -1,6 +1,7 @@
 const Post = require('../models/post');
 const Comment = require('../models/comment');
-const postMailer = require('./mailers/post_mailer');
+const queue = require('../config/kue');
+const emailsWorker = require('../workers/emails_worker');
 
 // storing post to database by associating user id with it!
 module.exports.createPost = async function (req, res) {
@@ -11,7 +12,15 @@ module.exports.createPost = async function (req, res) {
         // hide password
         myPost.user.password = '';
 
-        postMailer.newPost(myPost);
+        // sending post emails to emails queue delayed job
+        // using signup to specify job type @ workers/emails_worker
+        let job = queue.create('emails', { post: myPost }).save(function (err) {
+            if (err) {
+                console.log('Error in sending post to queue', err);
+                return;
+            }
+            console.log('post job enqueued', job.id);
+        });
 
         if (req.xhr) {
             return res.status(200).json({
@@ -22,7 +31,7 @@ module.exports.createPost = async function (req, res) {
             });
         }
         req.flash('success', 'Post Published!');
-       
+
     } catch (err) {
         req.flash('error', 'Error publishing post');
     }
@@ -42,7 +51,7 @@ module.exports.destroy = async function (req, res) {
                 return res.status(200).json({
                     data: {
                         post_id: req.params.id
-                    },message: 'Post and all associated comment deleted!'
+                    }, message: 'Post and all associated comment deleted!'
                 });
             }
             req.flash('success', 'Post and all associated comment deleted');

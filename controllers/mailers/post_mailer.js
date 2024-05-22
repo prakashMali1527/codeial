@@ -1,7 +1,7 @@
 const nodeMailer = require('../../config/nodemailer');
 
 exports.newPost = (post) => {
-    let htmlString = nodeMailer.renderTemplate({post: post}, '/posts/new_post.ejs');
+    let htmlString = nodeMailer.renderTemplate({ post: post }, '/posts/new_post.ejs');
     nodeMailer.transporter.sendMail({
         from: 'Codeial',
         to: post.user.email,
@@ -9,12 +9,12 @@ exports.newPost = (post) => {
         html: htmlString
     },
         (err, info) => {
-            if(err){
+            if (err) {
                 console.log('Error in sending mail', err);
                 return;
             }
 
-            console.log('Post mail delivered', info);
+            console.log('Post mail sent');
         }
     )
 }

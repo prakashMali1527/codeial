@@ -22,7 +22,6 @@ const customMware = require('./config/middleware');
 
 // fire the express
 const app = express();
-
 app.use(sassMiddleware({
     src: './assets/scss',
     dest: './assets/css',
