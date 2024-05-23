@@ -5,6 +5,7 @@ const db = require('./config/mongoose');
 const User = require('./models/user');
 const Post = require('./models/post');
 const port = 8000;
+const removeInactiveAccount = require('./workers/remove_inactive_account');
 
 // used for session and passport authentication
 const session = require('express-session');

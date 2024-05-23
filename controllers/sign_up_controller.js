@@ -1,6 +1,8 @@
 const User = require('../models/user');
 const queue = require('../config/kue');
-const emailsWorker = require('../workers/emails_worker');
+const InactiveAccount = require('../models/inactive_account');
+const generator = require('generate-password');
+const accountActivationMailer = require('../controllers/mailers/account_activation_mailer');
 
 module.exports.signUp = function (req, res) {
     res.render('signup');
@@ -23,17 +25,33 @@ module.exports.createUser = async function (req, res) {
             return res.redirect('back');
         }
         try {
-            let newUser = await User.create({ name, email, password });
-            req.flash('success', 'Account created successfully');
 
-            // sending signUp emails to emails queue delayed job
-            // using signup to specify job type @ workers/emails_worker
-            let job = queue.create('emails', { signup: newUser }).save(function (err) {
+            let newUser = await User.create({ name, email, password });
+
+            // generate account activation token
+            let accountActivationToken = generator.generate({
+                length: 25,
+                numbers: true
+            });
+
+            // create inactive account
+            let inactiveAccount = await InactiveAccount.create({accountActivationToken: accountActivationToken, user: newUser.id, isActive: false});
+
+            await inactiveAccount.populate('user', 'name email');
+
+            // send account activation mail
+            accountActivationMailer.activateAccount(inactiveAccount);
+            req.flash('success', 'Account activation link has been sent to your mail');
+
+            // removing inactive account after 24 hours
+            let job = queue.create('removeInactiveAccount', { _id: inactiveAccount._id })
+            .delay(24*60*60*1000)
+            .save(function (err) {
                 if (err) {
-                    console.log('Error in sending signUp user to queue', err);
+                    console.log('Error in sending Inactive Account to queue', err);
                     return;
                 }
-                console.log('signUp job enqueued', job.id);
+                console.log('Remove Inactive Account job enqueued', job.id);
             });
 
             return res.redirect('/signin');
