@@ -2,17 +2,24 @@ const User = require('../models/user');
 const fs = require('fs');
 const path = require('path');
 
-module.exports.profile = function (req, res) {
+module.exports.profile = async function (req, res) {
+    let user = req.user;
+    try{
+        if(req.params){
+            let profile_user = await User.findById(req.params.id);
 
-    User.findById(req.params.id)
-    .then((user)=>{
+            if(profile_user){
+                user = profile_user;
+            }
+        }
+        
         res.render('user_profile', { 
             title: 'profile',
             profile_user: user 
         });
-    }).catch((err)=>{
-        console.log(`Error: ${err}`);
-    })
+    }catch(err){
+        console.log(`Error finding profile user in db: ${err}`);
+    }
 }
 
 module.exports.update = async function(req,res){

@@ -10,7 +10,7 @@ exports.newPost = (post) => {
     },
         (err, info) => {
             if (err) {
-                console.log('Error in sending mail', err);
+                console.log('Error in sending post mail', err);
                 return;
             }
 

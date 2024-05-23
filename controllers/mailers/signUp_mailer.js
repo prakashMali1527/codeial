@@ -9,7 +9,7 @@ exports.newAccount = (user) => {
         html: htmlString
     }, (err, info) => {
         if (err) {
-            console.log('Error in sending mail', err);
+            console.log('Error in sending signUp mail', err);
             return;
         }
 

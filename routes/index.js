@@ -20,4 +20,6 @@ router.use('/comment',require('./comment.js'));
 
 router.use('/api',require('./api'));
 
+router.use('/reset-password',require('./resetpassword.js'));
+
 module.exports = router;
