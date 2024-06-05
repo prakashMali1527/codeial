@@ -31,6 +31,7 @@ module.exports.update = async function(req,res){
             User.uploadedAvatar(req,res,function(err){
                 if(err){
                     console.log('******Multer Error: ', err);
+                    return res.status(500).send('Server error in updating profile');
                 }
 
                 user.name = req.body.name;

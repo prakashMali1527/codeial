@@ -1,2 +1,2 @@
-node_modules/
-secretKeys.txt/
+/node_modules 
+/.env 

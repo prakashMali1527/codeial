@@ -2,14 +2,17 @@ const passport = require('passport');
 const googleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const generator = require('generate-password');
 
+require('dotenv').config();
+
 const User = require('../models/user');
 const queue = require('./kue');
 const emailsWorker = require('../workers/emails_worker');
 
+
 // tell passport to use a new strategy for google login
 passport.use(new googleStrategy({
-    clientID: "1",
-    clientSecret: "2",
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
     callbackURL: "http://localhost:8000/users/auth/google/callback"
 },
     async function (accessToken, refreshToken, profile, done) {
