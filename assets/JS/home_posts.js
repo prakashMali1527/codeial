@@ -16,6 +16,7 @@
                     $('#posts-list-container>ul').prepend(newPost);
 
                     createComment($(' .new-comment-form', newPost));
+                    toggleLike();
 
                     deletePost($(' .delete-post-button', newPost));
                     
@@ -98,36 +99,40 @@
     })
 
 
-    $('.post-likes .like-btn').each(function(){
-        $(this).click((e)=>{
-            e.preventDefault();
-            let saveClickLikes = this;
-            $.ajax({
-                type: 'get',
-                url: $(this).prop('href'),
-                success: function(data){
-                    console.log(data);
-                    countLike(data.deleted);
-                }, error: function(error){
-                    console.log(error);
+    function toggleLike(){
+        $('.post-likes .like-btn').each(function(){
+            $(this).click((e)=>{
+                e.preventDefault();
+                let saveClickLikes = this;
+                $.ajax({
+                    type: 'get',
+                    url: $(this).prop('href'),
+                    success: function(data){
+                        console.log(data);
+                        countLike(data.deleted);
+                    }, error: function(error){
+                        console.log(error);
+                    }
+                });
+                function countLike(deleted){
+                    
+                    let likesCount =  $(saveClickLikes).siblings().children('.likes-count').text();
+    
+            
+                    likesCount = parseInt(likesCount);
+            
+                    if(deleted){
+                      likesCount -= 1;
+                    }else {
+                      likesCount += 1;
+                    }
+            
+                    $(saveClickLikes).siblings().children('.likes-count').text(likesCount);
                 }
             });
-            function countLike(deleted){
-                
-                let likesCount =  $(saveClickLikes).siblings().children('.likes-count').text();
-
-        
-                likesCount = parseInt(likesCount);
-        
-                if(deleted){
-                  likesCount -= 1;
-                }else {
-                  likesCount += 1;
-                }
-        
-                $(saveClickLikes).siblings().children('.likes-count').text(likesCount);
-            }
         });
-    });
+    }
 
 }
+
+toggleLike();

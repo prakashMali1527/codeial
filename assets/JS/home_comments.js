@@ -13,6 +13,7 @@ let createComment = function (newCommentForm) {
                 let post_id = data.data.comment.post;
 
                 $(`#post-comments-${post_id}`).prepend(commentDOM);
+                toggleLike();
 
                 deleteComment($(` .delete-comment-button`,commentDOM));
 
@@ -80,35 +81,38 @@ $('.delete-comment-button').each(function(){
 })
 
 
-
-$('.comment-likes .like-btn').each(function(){
-    $(this).click((e)=>{
-        e.preventDefault();
-        let saveClickLikes = this;
-        $.ajax({
-            type: 'get',
-            url: $(this).prop('href'),
-            success: function(data){
-                console.log(data);
-                countLike(data.deleted);
-            }, error: function(error){
-                console.log(error);
+function toggleLike(){
+    $('.comment-likes .like-btn').each(function(){
+        $(this).click((e)=>{
+            e.preventDefault();
+            let saveClickLikes = this;
+            $.ajax({
+                type: 'get',
+                url: $(this).prop('href'),
+                success: function(data){
+                    console.log(data);
+                    countLike(data.deleted);
+                }, error: function(error){
+                    console.log(error);
+                }
+            });
+            function countLike(deleted){
+                
+                let likesCount =  $(saveClickLikes).siblings().children('.likes-count').text();
+    
+        
+                likesCount = parseInt(likesCount);
+        
+                if(deleted){
+                  likesCount -= 1;
+                }else {
+                  likesCount += 1;
+                }
+        
+                $(saveClickLikes).siblings().children('.likes-count').text(likesCount);
             }
         });
-        function countLike(deleted){
-            
-            let likesCount =  $(saveClickLikes).siblings().children('.likes-count').text();
-
-    
-            likesCount = parseInt(likesCount);
-    
-            if(deleted){
-              likesCount -= 1;
-            }else {
-              likesCount += 1;
-            }
-    
-            $(saveClickLikes).siblings().children('.likes-count').text(likesCount);
-        }
     });
-});
+}
+
+toggleLike();
