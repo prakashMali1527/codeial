@@ -5,4 +5,12 @@
     <% } %>
     <p> <%= comment.content%></p>
     <small> <%= comment.user.name %> </small>
+    <div class="comment-likes">
+        <p><span class="likes-count"><%=comment.likes.length%></span> Likes</p>
+        <% if(locals.user) { %>
+             <a class="like-btn" href="like/toggle/?id=<%=comment._id%>&type=Comment">
+                like button
+             </a>
+        <% } %>
+    </div>
 </li>   

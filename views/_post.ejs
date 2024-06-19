@@ -10,6 +10,14 @@
                     <%= post.content %>
                 </div>
     </div>
+    <div class="post-likes">
+        <p><span class="likes-count"><%=post.likes.length%></span> Likes</p>
+        <% if(locals.user) { %>
+             <a class="like-btn" href="like/toggle/?id=<%=post._id%>&type=Post">
+                like button
+             </a>
+        <% } %>
+    </div>
     <div class="post-comments">
         <% if(locals.user) { %>
             <form action="/comment/create" class="new-comment-form" method="POST">
