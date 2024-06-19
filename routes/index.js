@@ -25,4 +25,6 @@ router.use('/reset-password',require('./resetpassword.js'));
 
 router.get('/activate-account', accountActivationController.activateAccount);
 
+router.use('/like',require('./like.js'));
+
 module.exports = router;
