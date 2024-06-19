@@ -40,6 +40,12 @@
                     <a class="delete-post-button" href="/post/destroy/${post._id}">X</a>
                 <div> ${post.content} </div>
             </div>
+            <div class="post-likes">
+                <p><span class="likes-count">${post.likes.length}</span> Likes</p>
+                <a class="like-btn" href="like/toggle/?id=${post._id}&type=Post">
+                like button
+                </a>
+            </div>
             <div class="post-comments">
                 
                     <form action="/comment/create" class="new-comment-form" method="POST">
@@ -90,4 +96,38 @@
     $(`.delete-post-button`).each(function(){
         deletePost($(this));
     })
+
+
+    $('.post-likes .like-btn').each(function(){
+        $(this).click((e)=>{
+            e.preventDefault();
+            let saveClickLikes = this;
+            $.ajax({
+                type: 'get',
+                url: $(this).prop('href'),
+                success: function(data){
+                    console.log(data);
+                    countLike(data.deleted);
+                }, error: function(error){
+                    console.log(error);
+                }
+            });
+            function countLike(deleted){
+                
+                let likesCount =  $(saveClickLikes).siblings().children('.likes-count').text();
+
+        
+                likesCount = parseInt(likesCount);
+        
+                if(deleted){
+                  likesCount -= 1;
+                }else {
+                  likesCount += 1;
+                }
+        
+                $(saveClickLikes).siblings().children('.likes-count').text(likesCount);
+            }
+        });
+    });
+
 }

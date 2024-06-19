@@ -35,6 +35,12 @@ let newCommentDOM = function (comment) {
     
         <p> ${comment.content}</p>
         <small> ${comment.user.name} </small>
+        <div class="comment-likes">
+                <p><span class="likes-count">${comment.likes.length}</span> Likes</p>
+                <a class="like-btn" href="like/toggle/?id=${comment._id}&type=Comment">
+                like button
+                </a>
+        </div>
     </li>   
     `);
 }
@@ -72,3 +78,37 @@ $(`.new-comment-form`).each(function(){
 $('.delete-comment-button').each(function(){
     deleteComment($(this));
 })
+
+
+
+$('.comment-likes .like-btn').each(function(){
+    $(this).click((e)=>{
+        e.preventDefault();
+        let saveClickLikes = this;
+        $.ajax({
+            type: 'get',
+            url: $(this).prop('href'),
+            success: function(data){
+                console.log(data);
+                countLike(data.deleted);
+            }, error: function(error){
+                console.log(error);
+            }
+        });
+        function countLike(deleted){
+            
+            let likesCount =  $(saveClickLikes).siblings().children('.likes-count').text();
+
+    
+            likesCount = parseInt(likesCount);
+    
+            if(deleted){
+              likesCount -= 1;
+            }else {
+              likesCount += 1;
+            }
+    
+            $(saveClickLikes).siblings().children('.likes-count').text(likesCount);
+        }
+    });
+});
