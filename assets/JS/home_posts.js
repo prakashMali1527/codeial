@@ -16,16 +16,18 @@
                     $('#posts-list-container>ul').prepend(newPost);
 
                     createComment($(' .new-comment-form', newPost));
-                    toggleLike();
+                    
+                    // call toggle like event listener for this new post
+                    toggleLike($(' .post-likes .like-btn', newPost));
 
                     deletePost($(' .delete-post-button', newPost));
-                    
-                    showNoty(data.message,'success');
+
+                    showNoty(data.message, 'success');
 
                 }, error: function (err) {
                     console.log(`Error: ${err.responseText}`);
-                    
-                    showNoty('Cannot create post!','error');
+
+                    showNoty('Cannot create post!', 'error');
                 }
             });
 
@@ -78,13 +80,13 @@
                 url: $(deleteLink).prop('href'),
                 success: function (data) {
                     $(`#post-${data.data.post_id}`).remove();
-                    
-                    showNoty(data.message,'success');
+
+                    showNoty(data.message, 'success');
 
                 }, error: function (error) {
                     console.log(error.responseText);
 
-                    showNoty('Cannot delete post!','error');
+                    showNoty('Cannot delete post!', 'error');
                 }
             });
         })
@@ -92,47 +94,10 @@
 
 
     createPost();
-    
+
     // add AJAX deletion to all post which are already present on the page
-    $(`.delete-post-button`).each(function(){
+    $(`.delete-post-button`).each(function () {
         deletePost($(this));
     })
 
-
-    function toggleLike(){
-        $('.post-likes .like-btn').each(function(){
-            $(this).click((e)=>{
-                e.preventDefault();
-                let saveClickLikes = this;
-                $.ajax({
-                    type: 'get',
-                    url: $(this).prop('href'),
-                    success: function(data){
-                        console.log(data);
-                        countLike(data.deleted);
-                    }, error: function(error){
-                        console.log(error);
-                    }
-                });
-                function countLike(deleted){
-                    
-                    let likesCount =  $(saveClickLikes).siblings().children('.likes-count').text();
-    
-            
-                    likesCount = parseInt(likesCount);
-            
-                    if(deleted){
-                      likesCount -= 1;
-                    }else {
-                      likesCount += 1;
-                    }
-            
-                    $(saveClickLikes).siblings().children('.likes-count').text(likesCount);
-                }
-            });
-        });
-    }
-
 }
-
-toggleLike();

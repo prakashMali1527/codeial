@@ -8,14 +8,16 @@ let createComment = function (newCommentForm) {
             url: '/comment/create',
             data: $(newCommentForm).serialize(),
             success: function (data) {
-                let commentDOM = newCommentDOM(data.data.comment);
+                let newComment = newCommentDOM(data.data.comment);
 
                 let post_id = data.data.comment.post;
 
-                $(`#post-comments-${post_id}`).prepend(commentDOM);
-                toggleLike();
+                $(`#post-comments-${post_id}`).prepend(newComment);
 
-                deleteComment($(` .delete-comment-button`,commentDOM));
+                // call toggle like event listener for this new comment
+                toggleLike($(' .comment-likes .like-btn', newComment));
+
+                deleteComment($(` .delete-comment-button`,newComment));
 
                 showNoty(data.message,'success');
 
@@ -79,40 +81,3 @@ $(`.new-comment-form`).each(function(){
 $('.delete-comment-button').each(function(){
     deleteComment($(this));
 })
-
-
-function toggleLike(){
-    $('.comment-likes .like-btn').each(function(){
-        $(this).click((e)=>{
-            e.preventDefault();
-            let saveClickLikes = this;
-            $.ajax({
-                type: 'get',
-                url: $(this).prop('href'),
-                success: function(data){
-                    console.log(data);
-                    countLike(data.deleted);
-                }, error: function(error){
-                    console.log(error);
-                }
-            });
-            function countLike(deleted){
-                
-                let likesCount =  $(saveClickLikes).siblings().children('.likes-count').text();
-    
-        
-                likesCount = parseInt(likesCount);
-        
-                if(deleted){
-                  likesCount -= 1;
-                }else {
-                  likesCount += 1;
-                }
-        
-                $(saveClickLikes).siblings().children('.likes-count').text(likesCount);
-            }
-        });
-    });
-}
-
-toggleLike();
